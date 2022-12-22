@@ -1,0 +1,14 @@
+dataset : mnist
+seed : 1
+batch_size : 64
+labeled_batch_size : 100
+epochs : 30
+start_epoch : 0
+reconstruct_freq : 5
+labeled_examples : 100
+validation_examples : 5000
+bce_reconstruction : True
+z_dims : [32, 8, 2]
+learning_rate : 0.0003
+weight_decay : 0.0005
+config_path : configs/mnist_100.yaml

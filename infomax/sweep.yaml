@@ -1,0 +1,13 @@
+project: VAE
+program: main.py
+method: grid
+metric:
+  goal: minimize
+  name: loss
+parameters:
+  z_dim:
+    values: [4]
+  beta:
+    values: [0.1, 1, 10]
+  gamma:
+    values: [10, 20, 50, 100]

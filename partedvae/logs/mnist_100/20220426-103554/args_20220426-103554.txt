@@ -1,0 +1,21 @@
+dataset : mnist
+seed : 1
+batch_size : 64
+labeled_batch_size : 8
+epochs : 80
+start_epoch : 0
+reconstruct_freq : 10
+labeled_examples : 100
+validation_examples : 5000
+bce_reconstruction : True
+z_dim : 2
+u_dim : 2
+learning_rate : 0.0005
+classifier_learning_rate : 0.0005
+z_capacity : [0.0, 7.0, 100000, 15.0]
+u_capacity : [0.0, 7.0, 100000, 15.0]
+gamma_c : 15
+gamma_h : 30
+gamma_bc : 30
+bc_threshold : 0.15
+config_path : configs/mnist_100.yaml

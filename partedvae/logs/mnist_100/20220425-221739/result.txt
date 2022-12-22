@@ -1,0 +1,3 @@
+TEST classification error: 9.79%
+
+Bhattacharyya coefficient: 2.629

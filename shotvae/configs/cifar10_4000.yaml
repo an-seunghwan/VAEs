@@ -1,0 +1,4 @@
+dataset: "cifar10"
+seed: 2
+dmi: 2.3
+width: 4

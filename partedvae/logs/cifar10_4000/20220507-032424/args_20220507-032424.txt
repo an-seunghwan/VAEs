@@ -1,0 +1,24 @@
+dataset : cifar10
+seed : 1
+batch_size : 128
+labeled_batch_size : 32
+epochs : 200
+start_epoch : 0
+reconstruct_freq : 10
+labeled_examples : 4000
+validation_examples : 5000
+bce_reconstruction : True
+z_dim : 64
+u_dim : 64
+depth : 28
+width : 4
+slope : 0.1
+learning_rate : 0.0005
+classifier_learning_rate : 0.0005
+z_capacity : [0.0, 30.0, 150000, 1000.0]
+u_capacity : [0.0, 30.0, 150000, 1000.0]
+gamma_c : 1000
+gamma_h : 2000
+gamma_bc : 2000
+bc_threshold : 0.2
+config_path : configs/cifar10_4000.yaml

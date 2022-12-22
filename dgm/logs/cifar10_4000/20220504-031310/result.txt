@@ -1,0 +1,4 @@
+TEST classification error: 27.23%
+
+inception score | mean: 1.88, std: 0.06
+

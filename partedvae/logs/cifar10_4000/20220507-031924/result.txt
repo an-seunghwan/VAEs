@@ -1,0 +1,6 @@
+TEST classification error: 33.82%
+
+inception score | mean: 1.60, std: 0.04
+
+KL-divergence of u latent: 14.49
+

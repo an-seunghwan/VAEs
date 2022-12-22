@@ -1,0 +1,12 @@
+dataset : mnist
+seed : 1
+batch_size : 64
+epochs : 10
+start_epoch : 0
+reconstruct_freq : 1
+labeled_examples : 100
+validation_examples : 5000
+bce : True
+latent_dim : 2
+lr : 0.0003
+config_path : configs/mnist_100.yaml

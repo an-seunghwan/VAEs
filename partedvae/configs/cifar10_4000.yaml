@@ -1,0 +1,8 @@
+dataset: 'cifar10'
+width: 4
+z_capacity: [0., 30., 150000, 1000.]
+u_capacity: [0., 30., 150000, 1000.]
+gamma_c: 1000
+gamma_h: 2000
+gamma_bc: 2000
+bc_threshold: 0.2
