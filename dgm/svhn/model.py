@@ -36,7 +36,7 @@ class Encoder(K.models.Model):
         self.mean_layer = layers.Dense(latent_dim, activation='linear')
         self.logvar_layer = layers.Dense(latent_dim, activation='softplus')
         
-    @tf.function
+    # @tf.function
     def call(self, inputs, training=True):
         x, y = inputs
         h = self.net(x, training=training)
@@ -100,7 +100,7 @@ class Classifier(K.models.Model):
             ]
         )
     
-    @tf.function
+    # @tf.function
     def call(self, x, training=True):
         h = self.units(x, training=training)
         return h
@@ -138,7 +138,7 @@ class Decoder(K.models.Model):
             ]
         )
     
-    @tf.function
+    # @tf.function
     def call(self, x, training=True):
         h = self.net(x, training=training)
         return h
@@ -176,7 +176,7 @@ class DGM(K.models.Model):
         xhat = self.decoder(tf.concat([z, y], axis=-1), training=training) 
         return xhat
         
-    @tf.function
+    # @tf.function
     def call(self, inputs, training=True):
         x, y = inputs
         mean, logvar = self.encoder([x, y], training=training)

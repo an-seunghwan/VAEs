@@ -80,6 +80,8 @@ def get_args():
     '''Deep VAE Model Parameters'''
     parser.add_argument("--bce_reconstruction", default=True, type=bool,
                         help="Do BCE Reconstruction")
+    parser.add_argument('--drop_rate', default=0.1, type=float, 
+                        help='drop rate for the network')
 
     '''VAE parameters'''
     parser.add_argument('--latent_dim', default=128, type=int,
@@ -149,13 +151,15 @@ def main():
     total_length = sum(1 for _ in datasetU)
     #%%
     model = DGM(num_classes,
-                latent_dim=args['latent_dim'])
+                latent_dim=args['latent_dim'],
+                dropratio=args['drop_rate'])
     model.classifier.build(input_shape=(None, 32, 32, 3))
     model.build(input_shape=[(None, 32, 32, 3), (None, num_classes)])
     model.summary()
     
     buffer_model = DGM(num_classes,
-                    latent_dim=args['latent_dim'])
+                    latent_dim=args['latent_dim'],
+                    dropratio=args['drop_rate'])
     buffer_model.classifier.build(input_shape=(None, 32, 32, 3))
     buffer_model.build(input_shape=[(None, 32, 32, 3), (None, num_classes)])
     buffer_model.set_weights(model.get_weights()) # weight initialization
@@ -172,8 +176,8 @@ def main():
     for epoch in range(args['start_epoch'], args['epochs']):
         
         '''learning rate schedule'''
-        lr_gamma = 0.5
-        if epoch % 5 == 0:
+        lr_gamma = 0.9
+        if epoch % 5 == 0 and epoch != 0:
             optimizer_classifier.lr = optimizer_classifier.lr * lr_gamma
             
         if epoch % args['reconstruct_freq'] == 0:
