@@ -165,8 +165,8 @@ def generate_and_save_images(model, image, num_classes, step, save_dir):
         plt.imshow(xhat[0])
         plt.title('{}'.format(i))
         plt.axis('off')
-    # plt.savefig('{}/imgs/image_at_epoch_{}.png'.format(save_dir, step))
-    plt.show()
+    plt.savefig('{}/imgs/image_at_epoch_{}.png'.format(save_dir, step))
+    # plt.show()
     plt.close()
     return figure
 #%%
@@ -320,7 +320,7 @@ def main():
             f.write(str(key) + ' : ' + str(value) + '\n')
     
     artifact = wandb.Artifact(
-        f'{args["dataset"]}_PartedVAE', 
+        f'{args["dataset"]}_ShotVAE', 
         type='model',
         metadata=args) # description=""
     artifact.add_file(model_path + '/args.txt')
