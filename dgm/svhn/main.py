@@ -89,7 +89,7 @@ def get_args():
                         help='feature dimension in latent space for continuous variable')
     
     '''Optimizer Parameters'''
-    parser.add_argument('--learning_rate', default=1e-4, type=float,
+    parser.add_argument('--learning_rate', default=3e-4, type=float,
                         metavar='LR', help='initial learning rate')
     parser.add_argument('--weight_decay', default=5e-4, type=float)
     parser.add_argument('--alpha', default=1, type=float,
@@ -166,7 +166,7 @@ def main():
     #%%
     '''optimizer'''
     optimizer = K.optimizers.Adam(learning_rate=args['learning_rate'])
-    optimizer_classifier = K.optimizers.Adam(learning_rate=args['learning_rate'])
+    optimizer_classifier = K.optimizers.Adam(learning_rate=args['learning_rate'] * 0.1)
 
     test_accuracy_print = 0.
     
@@ -176,7 +176,7 @@ def main():
     for epoch in range(args['start_epoch'], args['epochs']):
         
         '''learning rate schedule'''
-        lr_gamma = 0.9
+        lr_gamma = 0.5
         if epoch % 5 == 0 and epoch != 0:
             optimizer_classifier.lr = optimizer_classifier.lr * lr_gamma
             

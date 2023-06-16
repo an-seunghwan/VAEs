@@ -4,8 +4,8 @@ import tensorflow as tf
 #%%
 def ELBO_criterion(xhat, x, y, z, mean, logvar, num_classes, args):
     if args['bce_reconstruction']:
-        error = - tf.reduce_sum(x * tf.math.log(tf.clip_by_value(xhat, 1e-6, 1.)) + 
-                                (1. - x) * tf.math.log(1. - tf.clip_by_value(xhat, 1e-6, 1.)), axis=[1, 2, 3])
+        error = - tf.reduce_sum(x * tf.math.log(tf.clip_by_value(xhat, 1e-6, 1-1e-6)) + 
+                                (1. - x) * tf.math.log(1. - tf.clip_by_value(xhat, 1e-6, 1-1e-6)), axis=[1, 2, 3])
     else:
         error = tf.reduce_sum(tf.math.square(x - xhat), axis=[1, 2, 3]) / 2.
     
