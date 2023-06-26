@@ -60,7 +60,7 @@ def get_args():
 
     parser.add_argument('--dataset', type=str, default='svhn',
                         help='dataset used for training')
-    parser.add_argument('--num', type=int, default=5, 
+    parser.add_argument('--num', type=int, default=12, 
                         help='seed for repeatable results')
 
     return parser
@@ -73,8 +73,7 @@ def main():
     args = vars(get_args().parse_args(args=[]))
     #%%
     """model load"""
-    artifact = wandb.use_artifact(f'anseunghwan/EXoN/{args["dataset"]}_PartedVAE:v{args["num"]}', type='model')
-    # artifact = wandb.use_artifact(f'anseunghwan/EXoN/{args["dataset"]}_ShotVAE:v{args["num"]}', type='model')
+    artifact = wandb.use_artifact(f'anseunghwan/EXoN/{args["dataset"]}_ShotVAE:v{args["num"]}', type='model')
     for key, item in artifact.metadata.items():
         args[key] = item
     model_dir = artifact.download()
@@ -115,7 +114,7 @@ def main():
     axes.flatten()[9].axis('off')
     plt.tight_layout()
     plt.savefig(f'./assets/shotvae_svhn_inter_same.png', bbox_inches='tight')
-    plt.show()
+    # plt.show()
     plt.close()
     
     wandb.log({f'between same': wandb.Image(fig)})

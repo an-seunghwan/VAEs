@@ -85,8 +85,8 @@ def get_args():
                         help='centeralization parameter')
     parser.add_argument('-dr', '--drop-rate', default=0, type=float, 
                         help='drop rate for the network')
-    parser.add_argument("--br", "--bce_reconstruction", default=True, type=bool,
-                        help="Do BCE Reconstruction")
+    # parser.add_argument("--br", "--bce-reconstruction", action='store_true', 
+    #                     help='Do BCE Reconstruction')
     parser.add_argument("-s", "--x-sigma", default=1, type=float,
                         help="The standard variance for reconstructed images, work as regularization")
 
@@ -201,7 +201,7 @@ def main():
     model = VAE(num_classes=num_classes, depth=args['depth'], width=args['width'], slope=args['slope'],
                 latent_dim=args['ldc'], temperature=args['temperature'])
     model.build(input_shape=[(None, 32, 32, 3), (None, num_classes)])
-    # model.summary()
+    model.summary()
     
     buffer_model = VAE(num_classes=num_classes, depth=args['depth'], width=args['width'], slope=args['slope'],
                     latent_dim=args['ldc'], temperature=args['temperature'])
@@ -307,10 +307,10 @@ def main():
         if epoch == 0:
             optimizer.lr = args['lr']
             
-        if args['dataset'] == 'cifar10':
-            if args['labeled_examples'] >= 2500:
-                if epoch == args['adjust_lr'][0]:
-                    args['ewm'] = args['ewm'] * 5
+        # if args['dataset'] == 'cifar10':
+        #     if args['labeled_examples'] >= 2500:
+        #         if epoch == args['adjust_lr'][0]:
+        #             args['ewm'] = args['ewm'] * 5
     #%%
     '''model & configurations save'''        
     model.save_weights(model_path + '/model.h5', save_format="h5")
@@ -332,6 +332,8 @@ def main():
     wandb.run.finish()
 #%%
 def train(datasetL, datasetU, model, buffer_model, optimizer, epoch, args, num_classes, total_length, model_path):
+    recon_lossL_avg = tf.keras.metrics.Mean()
+    recon_lossU_avg = tf.keras.metrics.Mean()
     labeled_loss_avg = tf.keras.metrics.Mean()
     unlabeled_loss_avg = tf.keras.metrics.Mean()
     kl_y_loss_avg = tf.keras.metrics.Mean()
@@ -355,7 +357,7 @@ def train(datasetL, datasetU, model, buffer_model, optimizer, epoch, args, num_c
     
     iteration = total_length // args['batch_size'] 
     
-    progress_bar = tqdm.tqdm(range(iteration), unit='batch')
+    progress_bar = tqdm.tqdm(range(iteration), unit='batch', leave=True)
     for batch_num in progress_bar:
         
         '''augmentation'''
@@ -424,6 +426,8 @@ def train(datasetL, datasetU, model, buffer_model, optimizer, epoch, args, num_c
         '''decoupled weight decay'''
         weight_decay_decoupled(model, buffer_model, decay_rate=args['wd'] * optimizer.lr)
         
+        recon_lossL_avg(recon_lossL)
+        recon_lossU_avg(recon_lossU)
         labeled_loss_avg(loss_supervised)
         unlabeled_loss_avg(loss_unsupervised)
         kl_y_loss_avg(kl_yU)
@@ -432,6 +436,8 @@ def train(datasetL, datasetU, model, buffer_model, optimizer, epoch, args, num_c
 
         progress_bar.set_postfix({
             'EPOCH': f'{epoch:04d}',
+            'recon_lossL': f'{recon_lossL_avg.result():.4f}',
+            'recon_lossU': f'{recon_lossU_avg.result():.4f}',
             'labeled Loss': f'{labeled_loss_avg.result():.4f}',
             'unlabeled Loss': f'{unlabeled_loss_avg.result():.4f}',
             'KL': f'{kl_y_loss_avg.result():.4f}',
